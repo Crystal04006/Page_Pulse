@@ -1,8 +1,9 @@
 import { AuditData, AuditHistoryItem } from '../types';
 import { generateDynamicAudit } from '../data/mockAudits';
 
-const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
-
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  'https://page-pulse-dfwl.onrender.com';
 /**
  * Runs an audit by calling the FastAPI backend.
  * Falls back to local generator if backend is unavailable or offline.
