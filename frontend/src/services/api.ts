@@ -1,9 +1,10 @@
 import { AuditData, AuditHistoryItem } from '../types';
 import { generateDynamicAudit } from '../data/mockAudits';
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  'https://page-pulse-dfwl.onrender.com/api';
+// Strips trailing slashes if present to prevent double-slash issues (e.g. /api//audit)
+const RAW_API_URL = import.meta.env.VITE_API_BASE_URL || 'https://page-pulse-dfwl.onrender.com/api';
+const API_BASE_URL = RAW_API_URL.replace(/\/+$/, '');
+
 /**
  * Runs an audit by calling the FastAPI backend.
  * Falls back to local generator if backend is unavailable or offline.
@@ -11,7 +12,7 @@ const API_BASE_URL =
 export async function runHealthAudit(url: string): Promise<{ data: AuditData; isLiveBackend: boolean }> {
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
+    const timeoutId = setTimeout(() => controller.abort(), 12000); // Increased timeout to 12s for Render cold starts
 
     const res = await fetch(`${API_BASE_URL}/audit?url=${encodeURIComponent(url)}`, {
       signal: controller.signal,
@@ -21,7 +22,7 @@ export async function runHealthAudit(url: string): Promise<{ data: AuditData; is
 
     if (res.ok) {
       const liveData = await res.json();
-      // Ensure metrics and issues structure matches expected interface
+      
       const formattedData: AuditData = {
         id: liveData.id || `audit-${Date.now()}`,
         url: liveData.url || url,
@@ -69,7 +70,7 @@ export async function runHealthAudit(url: string): Promise<{ data: AuditData; is
       return { data: formattedData, isLiveBackend: true };
     }
   } catch (err) {
-    console.warn('FastAPI backend not reachable at http://127.0.0.1:8000/api. Falling back to local audit engine.', err);
+    console.warn(`FastAPI backend not reachable at ${API_BASE_URL}. Falling back to local audit engine.`, err);
   }
 
   // Fallback to client generator if offline or error

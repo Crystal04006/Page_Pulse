@@ -1,139 +1,218 @@
-# ⚡ Page Pulse — Web Audit & Instant Health Inspector Engine
+Here is a clean, professional, and well-structured `README.md` tailored specifically for **Page Pulse** that satisfies all three requirements.
 
-> **Developer SEO Assistant & Real-Time Performance Inspector**  
-> Built for the **Digital Heroes** Training Task.
-
-Page Pulse is an enterprise-grade web audit engine designed to perform real-time health checks, performance analysis, and technical SEO evaluations of target URLs. Built with a **FastAPI (Python)** backend and a **React (Vite + TypeScript)** frontend, it provides automated rule inspection, SSRF protection, caching, and actionable fix recommendations.
+You can copy and paste this directly into your `README.md` file in the root of your project repository.
 
 ---
 
-## 🛠️ Key Architectural Features
+```markdown
+# ⚡ Page Pulse — Developer SEO Assistant & Web Health Inspector
 
-- **SSRF Protection & URL Validation:** Sanitizes and validates inbound target URLs against internal/private IP ranges and dangerous protocols.
-- **In-Memory TTL Caching & SQLite Persistence:** Caches recent audit reports to reduce network overhead while persisting audit history in SQLite.
-- **Multi-Rule Evaluation Engine:** Inspects HTTP status, response latency, DOM headers, meta tags, and accessibility indicators.
-- **Interactive Fix Simulator:** Real-time score recalculation allowing users to preview potential score gains by toggling recommended fixes.
-- **PDF & JSON Report Export:** Generate structured client-ready reports or download raw inspection JSON files.
+Page Pulse is an automated web health inspector and developer-centric SEO engine. Built with a **React (Vite) + TypeScript** frontend and a **FastAPI** backend, it parses web resources, evaluates SEO/performance metrics against custom rule engines, and delivers structured diagnostic feedback with actionable fix code snippets.
 
 ---
 
-## 📂 Project Directory Structure
+## 🚀 Live Demo & Links
 
-```text
-page-pulse/
-├── backend/
-│   ├── app/
-│   │   ├── core/           # SSRF validation, security guards, caching logic
-│   │   ├── db/             # SQLite database models & persistence
-│   │   ├── services/       # Evaluator engines and inspection rules
-│   │   └── main.py         # FastAPI application entrypoint & endpoints
-│   ├── requirements.txt    # Backend Python dependencies
-│   └── test_audit.py       # Pytest unit & integration tests
-├── frontend/
-│   ├── src/
-│   │   ├── components/     # React UI components (Gauge, Tables, ActionItems)
-│   │   ├── services/       # API integration client
-│   │   ├── types/          # TypeScript interfaces & definitions
-│   │   ├── App.tsx         # Root React application
-│   │   └── main.tsx        # Application mount entrypoint
-│   ├── package.json        # Frontend Node dependencies & scripts
-│   └── vite.config.ts      # Vite dev server configuration
-└── README.md
+* **Live Frontend App:** [https://page-pulse-plum.vercel.app](https://page-pulse-plum.vercel.app)
+* **Backend API:** [https://page-pulse-dfwl.onrender.com](https://page-pulse-dfwl.onrender.com)
+* **Repository:** [https://github.com/Crystal0406/Page_Pulse](https://github.com/Crystal0406/Page_Pulse)
 
-## 🚀 Getting Started (Local Development)
-Prerequisites
-Python: v3.10+
+---
 
-Node.js: v18.0+
+## 🛠️ Local Setup & Installation
 
-npm: v9.0+
+### Prerequisites
+* **Node.js:** v18+ 
+* **Python:** 3.10+
+* **Git**
 
+---
 
-## 1️⃣ Backend Setup (FastAPI)
-Open a terminal and navigate to the backend folder:
+### 1. Backend Setup (FastAPI)
 
-Bash
+```bash
+# Navigate to backend directory
 cd backend
 
-## Create and activate a Python virtual environment:
-
-Bash
-# Windows (PowerShell)
+# Create and activate virtual environment
 python -m venv venv
-.\venv\Scripts\Activate.ps1
-
-# Linux / macOS
-python3 -m venv venv
+# On Windows:
+.\venv\Scripts\activate
+# On macOS/Linux:
 source venv/bin/activate
 
-
-## Install required dependencies:
-
-Bash
+# Install dependencies
 pip install -r requirements.txt
 
-
-## Start the FastAPI development server on port 8000:
-
-Bash
+# Start the FastAPI server locally
 uvicorn app.main:app --reload --port 8000
-Verify backend status by opening http://127.0.0.1:8000 in your browser.
 
-## 2️⃣ Frontend Setup (React + Vite)
-Open a second terminal window and navigate to the frontend folder:
+```
 
-Bash
-cd frontend
-Install Node modules:
+> The API server will be available at `http://127.0.0.1:8000`.
 
-Bash
+---
+
+### 2. Frontend Setup (React + Vite)
+
+```bash
+# Navigate to frontend directory
+cd ../frontend
+
+# Install node dependencies
 npm install
-Start the Vite development server:
 
-Bash
+# Create local environment configuration
+echo "VITE_API_BASE_URL=[http://127.0.0.1:8000/api](http://127.0.0.1:8000/api)" > .env.local
+
+# Start development server
 npm run dev
-Open http://localhost:3000 in your browser. The connection status badge will automatically turn FastAPI Connected.
 
-## 🧪 Running Tests
-To run the backend test suite (unit tests and endpoint integration checks):
+```
 
-Bash
+> The UI will open at `http://localhost:5173`.
+
+---
+
+### 3. Running Test Suites
+
+To execute the backend unit tests and rule engine verifications:
+
+```bash
 cd backend
-.\venv\Scripts\python.exe -m pytest
-📡 API Endpoint Specifications
-GET /
-Description: Health check ping endpoint to verify backend status.
+pytest
 
-##Response Example:
+```
 
-JSON
+---
+
+## 📡 API Contract
+
+### `GET /`
+
+**Description:** Health check endpoint to confirm backend engine status.
+
+**Response:** `200 OK`
+
+```json
 {
   "status": "online",
   "system": "Page Pulse Audit Engine v3.1",
   "architecture": "Plugin-Based Rule Engine"
 }
-GET /api/audit?url={target_url}
-Description: Initiates a live security, performance, and SEO audit on the target web page.
 
-## Parameters: url (string, required) — Absolute HTTP/HTTPS URL.
+```
 
-## Error Codes:
+---
 
-400 Bad Request: Invalid or unsafe URL parameter, non-HTML MIME type, or invalid response.
+### `GET /api/audit`
 
-504 Gateway Timeout: Target server failed to respond within 10 seconds.
+**Description:** Executes a live website health audit for a target URL.
 
-## GET /api/history
-Description: Fetches historical audit records stored in the SQLite database.
+**Query Parameters:**
 
-## 🌐 Production Live Deployment
-Frontend Hosting: Deployed on Vercel / Netlify
+* `url` *(string, required)*: Fully qualified web target (e.g., `https://dev.to`).
 
-Backend Hosting: Deployed on Render / Railway
+**Response (`200 OK`):**
 
-Environment Variable Configuration:
+```json
+{
+  "id": "audit-1721950000",
+  "url": "[https://dev.to](https://dev.to)",
+  "timestamp": "2026-07-26T00:30:00Z",
+  "health_score": 85,
+  "metrics": {
+    "status_code": 200,
+    "response_time_ms": 320,
+    "h1_count": 1,
+    "h2_count": 5,
+    "meta_title": "DEV Community",
+    "meta_description": "A constructive and inclusive social network for software developers.",
+    "og_image": "[https://dev.to/og.png](https://dev.to/og.png)",
+    "mobile_responsive": true,
+    "ssl_active": true,
+    "page_size_kb": 850,
+    "images_missing_alt": 2,
+    "total_images": 12,
+    "canonical_url": "[https://dev.to/](https://dev.to/)",
+    "has_robots_txt": true,
+    "has_sitemap": true
+  },
+  "issues": [
+    {
+      "id": "iss-1",
+      "rule_id": "rule_missing_alt",
+      "title": "Images Missing Alt Text",
+      "severity": "warning",
+      "category": "accessibility",
+      "predicted_priority": 1,
+      "estimated_score_gain": 5,
+      "estimated_fix_time": "5 mins",
+      "business_impact": "Reduces screen reader accessibility and image search indexation.",
+      "location_context": "2 <img> tags missing alt attributes.",
+      "suggested_fix": {
+        "html": "<img src=\"logo.png\" alt=\"Descriptive image text\">",
+        "react": "<img src={logo} alt=\"Descriptive image text\" />"
+      }
+    }
+  ]
+}
 
-VITE_API_BASE_URL = https://<your-backend-render-url>.onrender.com
+```
 
-## 🔗 Footer Compliance Link
-This project is built and submitted for Digital Heroes Training Task.
+**Error Responses:**
+
+* `400 Bad Request`: Invalid URL format or unsafe request target.
+* `422 Unprocessable Entity`: Missing required query parameter.
+* `502 Bad Gateway`: Target domain unreachable or connection timeout.
+
+---
+
+### `GET /api/history`
+
+**Description:** Fetches historical audit logs from persistent storage.
+
+**Query Parameters:** `url` *(string, optional)*
+
+**Response (`200 OK`):**
+
+```json
+{
+  "history": [
+    {
+      "id": "audit-1721950000",
+      "url": "[https://dev.to](https://dev.to)",
+      "timestamp": "2026-07-26T00:30:00Z",
+      "health_score": 85
+    }
+  ]
+}
+
+```
+
+---
+
+## 🏛️ Key Design Decisions & Reasoning
+
+### 1. Hybrid Client/Server Fallback Engine
+
+* **Decision:** Built a client-side mock audit generator that seamlessly steps in if the live FastAPI backend is unreachable or undergoing a cold start.
+* **Reasoning:** On free deployment tiers like Render, backend services spin down after inactivity, causing latency spikes for initial requests. The client fallback prevents UI breakdown, guaranteeing a smooth, uninterrupted user experience for evaluators while real network fetches initialize in the background.
+
+---
+
+### 2. SSRF (Server-Side Request Forgery) Security Filtering
+
+* **Decision:** Implemented input validation and IP resolution checks in FastAPI before making outbound HTTP requests to user-supplied URLs.
+* **Reasoning:** Allowing a backend server to query arbitrary user URLs opens critical security risks, such as scanning local network interfaces (`localhost`, `127.0.0.1`, or private internal subnet IPs). Restricting targets to valid, public-facing domains protects internal infrastructure.
+
+---
+
+### 3. Modular Plugin-Based Rule Engine
+
+* **Decision:** Structured SEO diagnostic checks (e.g., Heading Hierarchy, Meta Validation, Image Accessibility, SSL Status) as modular rule plugins rather than a monolithic evaluation function.
+* **Reasoning:** A modular rule engine makes the codebase maintainable and scalable. Developers can add, adjust, or toggle new SEO and performance rules independently without touching core scoring logic or API routes, simplifying unit test writing with `pytest`.
+
+```
+
+```
