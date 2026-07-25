@@ -40,7 +40,7 @@ page-pulse/
 │   └── vite.config.ts      # Vite dev server configuration
 └── README.md
 
-🚀 Getting Started (Local Development)
+## 🚀 Getting Started (Local Development)
 Prerequisites
 Python: v3.10+
 
@@ -49,13 +49,13 @@ Node.js: v18.0+
 npm: v9.0+
 
 
-1️⃣ Backend Setup (FastAPI)
+## 1️⃣ Backend Setup (FastAPI)
 Open a terminal and navigate to the backend folder:
 
 Bash
 cd backend
 
-Create and activate a Python virtual environment:
+## Create and activate a Python virtual environment:
 
 Bash
 # Windows (PowerShell)
@@ -67,19 +67,19 @@ python3 -m venv venv
 source venv/bin/activate
 
 
-Install required dependencies:
+## Install required dependencies:
 
 Bash
 pip install -r requirements.txt
 
 
-Start the FastAPI development server on port 8000:
+## Start the FastAPI development server on port 8000:
 
 Bash
 uvicorn app.main:app --reload --port 8000
 Verify backend status by opening http://127.0.0.1:8000 in your browser.
 
-2️⃣ Frontend Setup (React + Vite)
+## 2️⃣ Frontend Setup (React + Vite)
 Open a second terminal window and navigate to the frontend folder:
 
 Bash
@@ -94,7 +94,7 @@ Bash
 npm run dev
 Open http://localhost:3000 in your browser. The connection status badge will automatically turn FastAPI Connected.
 
-🧪 Running Tests
+## 🧪 Running Tests
 To run the backend test suite (unit tests and endpoint integration checks):
 
 Bash
@@ -104,7 +104,7 @@ cd backend
 GET /
 Description: Health check ping endpoint to verify backend status.
 
-Response Example:
+##Response Example:
 
 JSON
 {
@@ -115,18 +115,18 @@ JSON
 GET /api/audit?url={target_url}
 Description: Initiates a live security, performance, and SEO audit on the target web page.
 
-Parameters: url (string, required) — Absolute HTTP/HTTPS URL.
+## Parameters: url (string, required) — Absolute HTTP/HTTPS URL.
 
-Error Codes:
+## Error Codes:
 
 400 Bad Request: Invalid or unsafe URL parameter, non-HTML MIME type, or invalid response.
 
 504 Gateway Timeout: Target server failed to respond within 10 seconds.
 
-GET /api/history
+## GET /api/history
 Description: Fetches historical audit records stored in the SQLite database.
 
-🌐 Production Live Deployment
+## 🌐 Production Live Deployment
 Frontend Hosting: Deployed on Vercel / Netlify
 
 Backend Hosting: Deployed on Render / Railway
@@ -135,5 +135,5 @@ Environment Variable Configuration:
 
 VITE_API_BASE_URL = https://<your-backend-render-url>.onrender.com
 
-🔗 Footer Compliance Link
+## 🔗 Footer Compliance Link
 This project is built and submitted for Digital Heroes Training Task.
