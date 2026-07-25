@@ -12,12 +12,13 @@ const API_BASE_URL = RAW_API_URL.replace(/\/+$/, '');
 export async function runHealthAudit(url: string): Promise<{ data: AuditData; isLiveBackend: boolean }> {
   const formattedUrl = url.trim();
 
-  // Validate basic domain structure before requesting an audit
-  const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/.*)?$/i;
-  if (!formattedUrl || !urlPattern.test(formattedUrl)) {
-    throw new Error('Please enter a valid web URL (e.g., https://example.com)');
-  }
+ 
+  // Strict regex requiring a standard dot extension (e.g. domain.com)
+  const urlPattern = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/i;
 
+  if (!formattedUrl || !urlPattern.test(formattedUrl)) {
+    throw new Error('Invalid URL domain. Please enter a valid address like https://example.com');
+  }
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 12000); // 12s timeout for Render cold starts
