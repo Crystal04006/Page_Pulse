@@ -1,0 +1,15 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Virtual environment
+venv/
+ENV/
+
+# SQLite Databases & logs
+*.db
+history.db
+app/db/history.db
+*.log

@@ -1,0 +1,20 @@
+{
+  "policy_name": "Standard SEO & Accessibility Health Policy",
+  "version": "1.0",
+  "base_score": 100,
+  "penalties": {
+    "status_not_200": 40,
+    "slow_response_ms": 15,
+    "missing_title": 15,
+    "missing_meta_description": 10,
+    "invalid_h1_count": 10,
+    "images_missing_alt": 5,
+    "thin_content_words": 5,
+    "unsecure_protocol": 10,
+    "missing_opengraph_image": 5
+  },
+  "thresholds": {
+    "slow_response_limit_ms": 2000,
+    "thin_content_word_limit": 100
+  }
+}

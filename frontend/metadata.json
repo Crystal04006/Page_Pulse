@@ -1,0 +1,6 @@
+{
+  "name": "Page Pulse",
+  "description": "Developer SEO Assistant & Instant Web Health Inspector with interactive audits, score simulation, and multi-framework code fixes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
