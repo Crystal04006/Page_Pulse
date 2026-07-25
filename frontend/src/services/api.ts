@@ -10,11 +10,19 @@ const API_BASE_URL = RAW_API_URL.replace(/\/+$/, '');
  * Falls back to local generator if backend is unavailable or offline.
  */
 export async function runHealthAudit(url: string): Promise<{ data: AuditData; isLiveBackend: boolean }> {
+  const formattedUrl = url.trim();
+
+  // Validate basic domain structure before requesting an audit
+  const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/.*)?$/i;
+  if (!formattedUrl || !urlPattern.test(formattedUrl)) {
+    throw new Error('Please enter a valid web URL (e.g., https://example.com)');
+  }
+
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 12000); // Increased timeout to 12s for Render cold starts
+    const timeoutId = setTimeout(() => controller.abort(), 12000); // 12s timeout for Render cold starts
 
-    const res = await fetch(`${API_BASE_URL}/audit?url=${encodeURIComponent(url)}`, {
+    const res = await fetch(`${API_BASE_URL}/audit?url=${encodeURIComponent(formattedUrl)}`, {
       signal: controller.signal,
       headers: { 'Accept': 'application/json' }
     });
@@ -25,7 +33,7 @@ export async function runHealthAudit(url: string): Promise<{ data: AuditData; is
       
       const formattedData: AuditData = {
         id: liveData.id || `audit-${Date.now()}`,
-        url: liveData.url || url,
+        url: liveData.url || formattedUrl,
         timestamp: liveData.timestamp || new Date().toISOString(),
         health_score: liveData.health_score ?? 75,
         metrics: {
@@ -34,7 +42,7 @@ export async function runHealthAudit(url: string): Promise<{ data: AuditData; is
           response_time_ms: liveData.metrics?.response_time_ms ?? 350,
           h1_count: liveData.metrics?.h1_count ?? 1,
           h2_count: liveData.metrics?.h2_count ?? 3,
-          meta_title: liveData.metrics?.meta_title || `${url} Page`,
+          meta_title: liveData.metrics?.meta_title || `${formattedUrl} Page`,
           meta_description: liveData.metrics?.meta_description || '',
           og_image: liveData.metrics?.og_image || '',
           mobile_responsive: liveData.metrics?.mobile_responsive ?? true,
@@ -42,7 +50,7 @@ export async function runHealthAudit(url: string): Promise<{ data: AuditData; is
           page_size_kb: liveData.metrics?.page_size_kb ?? 1200,
           images_missing_alt: liveData.metrics?.images_missing_alt ?? 0,
           total_images: liveData.metrics?.total_images ?? 5,
-          canonical_url: liveData.metrics?.canonical_url || url,
+          canonical_url: liveData.metrics?.canonical_url || formattedUrl,
           has_robots_txt: liveData.metrics?.has_robots_txt ?? true,
           has_sitemap: liveData.metrics?.has_sitemap ?? true
         },
@@ -69,12 +77,16 @@ export async function runHealthAudit(url: string): Promise<{ data: AuditData; is
 
       return { data: formattedData, isLiveBackend: true };
     }
-  } catch (err) {
+  } catch (err: any) {
+    // If it's a validation error, rethrow so UI displays error banner
+    if (err.message.includes('valid web URL')) {
+      throw err;
+    }
     console.warn(`FastAPI backend not reachable at ${API_BASE_URL}. Falling back to local audit engine.`, err);
   }
 
-  // Fallback to client generator if offline or error
-  return { data: generateDynamicAudit(url), isLiveBackend: false };
+  // Fallback to client generator if offline or server error
+  return { data: generateDynamicAudit(formattedUrl), isLiveBackend: false };
 }
 
 /**
