@@ -3,7 +3,7 @@ import { generateDynamicAudit } from '../data/mockAudits';
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  'https://page-pulse-dfwl.onrender.com';
+  'https://page-pulse-dfwl.onrender.com/api';
 /**
  * Runs an audit by calling the FastAPI backend.
  * Falls back to local generator if backend is unavailable or offline.
